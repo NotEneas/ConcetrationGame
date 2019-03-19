@@ -1,14 +1,44 @@
 const grid = document.querySelector('.js-grid');
 // array of html elements representing cards
 let cards = null;
+let isProcessingMatch = false;
 
-let Card = prop => {
+/**
+ * Card component
+ *
+ * @return     {string}  Return the string representaton of the HTML Card component
+ */
+let Card = ({ value }) => {
 	return `
-		<div class="card" data-value="${prop.value}">
+		<div class="card" data-value="${value}">
 			<section class="card_back">🃏</section>
-			<section class="card_front">${prop.value}</section>
+			<section class="card_front">${value}</section>
 		</div>
 	`;
+};
+
+let state = {
+	// will hold maximum two cards [card1, card2]
+	selectedCards: [],
+	clearSelectedCards() {
+		this.selectedCards = [];
+	},
+
+	// state for matched count
+	matchedCount: 0,
+	maximumMatchedCount: 16,
+
+	incrementMatchCount() {
+		this.matchedCount += 1;
+	},
+
+	allMatched() {
+		return this.matchedCount === this.maximumMatchedCount;
+	},
+
+	restart() {
+		this.matchedCount = 0;
+	}
 };
 
 let uniqueMatches = [
@@ -33,59 +63,37 @@ let uniqueMatches = [
 ];
 
 function startGame() {
-	function generateCardsHtml() {
-		let mathces = [...uniqueMatches, ...uniqueMatches];
-
-		function shuffle(a) {
-			for (let i = a.length - 1; i > 0; i--) {
-				const j = Math.floor(Math.random() * (i + 1));
-				[a[i], a[j]] = [a[j], a[i]];
-			}
-			return a;
-		}
-		shuffle(mathces);
-		console.log(mathces);
-
-		return mathces.map(value => Card({ value })).join('');
-	}
-
 	let html = generateCardsHtml();
 	grid.innerHTML = html;
+
 	cards = grid.querySelectorAll('.card');
+	cards.forEach(card => {
+		card.addEventListener('click', handleCardClick);
+	});
+}
+
+/**
+ * Return string HTML represantation of cards.
+ *
+ * @return     {string}  the string html representation
+ */
+function generateCardsHtml() {
+	let mathces = [...uniqueMatches, ...uniqueMatches];
+
+	function shuffle(a) {
+		for (let i = a.length - 1; i > 0; i--) {
+			const j = Math.floor(Math.random() * (i + 1));
+			[a[i], a[j]] = [a[j], a[i]];
+		}
+		return a;
+	}
+	shuffle(mathces);
+	console.log(mathces);
+
+	return mathces.map(value => Card({ value })).join('');
 }
 
 startGame();
-startGame();
-
-let isProcessingMatch = false;
-let matchedCount = {
-	current: 0,
-	max: 3,
-
-	increment() {
-		this.current += 1;
-	},
-
-	allMatched() {
-		return this.current === this.max;
-	},
-
-	restart() {
-		current: 0;
-	}
-};
-
-let state = {
-	// will hold maximum two cards [card1, card2]
-	selectedCards: [],
-	clearSelectedCards() {
-		this.selectedCards = [];
-	}
-};
-
-cards.forEach(card => {
-	card.addEventListener('click', handleCardClick);
-});
 
 function handleCardClick(e) {
 	// return if it is processing the match
@@ -119,13 +127,13 @@ function matchCards() {
 	if (valueA === valueB) {
 		// handle a match
 		setTimeout(() => {
+			state.incrementMatchCount();
 			state.selectedCards.forEach(card => {
 				card.classList.add('matched');
 				card.removeEventListener('click', handleCardClick);
 			});
 			state.clearSelectedCards();
 			isProcessingMatch = false;
-
 			didItEnd();
 		}, 1000);
 	} else {
@@ -144,12 +152,14 @@ const modalEl = document.querySelector('.js-modal');
 const timePlaceholder = modalEl.querySelector('.js-modal-time');
 
 function didItEnd() {
-	matchedCount.increment();
-
-	if (matchedCount.allMatched()) {
+	if (state.allMatched()) {
+		// it did end
+		// show a modal
 		modalEl.classList.add('open');
-		let countDown = 6;
 
+		// cound down to 0
+		// and restart game
+		let countDown = 6;
 		let interval = setInterval(() => {
 			countDown--;
 			timePlaceholder.textContent = `${countDown}`;
@@ -161,6 +171,6 @@ function didItEnd() {
 			}
 		}, 1000);
 
-		matchedCount.restart();
+		state.restart();
 	}
 }
