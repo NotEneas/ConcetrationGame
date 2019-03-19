@@ -1,7 +1,34 @@
+:root {
+	--shadow: 0 4px 4px #00000022;
+}
+
 * {
 	box-sizing: border-box;
 }
 
 body {
 	background: #fafafa;
+}
+
+.card {
+	background: #fff;
+	box-shadow: var(--shadow);
+	padding: 20px;
+	margin-bottom: 10px;
+}
+
+.card .card_front {
+	display: none;
+}
+
+.card.open .card_front {
+	display: block;
+}
+
+.card .card_back {
+	display: block;
+}
+
+.card.open .card_back {
+	display: none;
 }
