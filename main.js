@@ -2,6 +2,22 @@ const grid = document.querySelector('.js-grid');
 const cards = grid.querySelectorAll('.card');
 
 let isProcessingMatch = false;
+let matchedCount = {
+	current: 0,
+	max: 3,
+
+	increment() {
+		this.current += 1;
+	},
+
+	allMatched() {
+		return this.current === this.max;
+	},
+
+	restart() {
+		current: 0;
+	}
+};
 
 let state = {
 	// will hold maximum two cards [card1, card2]
@@ -53,6 +69,8 @@ function matchCards() {
 			});
 			state.clearSelectedCards();
 			isProcessingMatch = false;
+
+			didItEnd();
 		}, 1000);
 	} else {
 		// handle don' match
@@ -63,5 +81,14 @@ function matchCards() {
 			state.clearSelectedCards();
 			isProcessingMatch = false;
 		}, 1000);
+	}
+}
+
+function didItEnd() {
+	matchedCount.increment();
+
+	if (matchedCount.allMatched()) {
+		alert('congratulations');
+		matchedCount.restart();
 	}
 }
