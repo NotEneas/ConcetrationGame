@@ -88,7 +88,6 @@ function generateCardsHtml() {
 		return a;
 	}
 	shuffle(mathces);
-	console.log(mathces);
 
 	return mathces.map(value => Card({ value })).join('');
 }
