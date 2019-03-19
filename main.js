@@ -26,7 +26,7 @@ let state = {
 
 	// state for matched count
 	matchedCount: 0,
-	maximumMatchedCount: 16,
+	maximumMatchedCount: 18,
 
 	incrementMatchCount() {
 		this.matchedCount += 1;
