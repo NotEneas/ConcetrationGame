@@ -115,7 +115,7 @@ function matchCards() {
 		// handle a match
 		setTimeout(() => {
 			state.selectedCards.forEach(card => {
-				card.innerHTML = card.dataset.value + '(matched)';
+				card.classList.add('matched');
 				card.removeEventListener('click', handleCardClick);
 			});
 			state.clearSelectedCards();

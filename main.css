@@ -9,6 +9,16 @@
 body {
 	margin: 0;
 	background: #fafafa;
+	font-family: monospace;
+	color: #555;
+}
+
+.grid {
+	display: grid;
+	grid-template-rows: repeat(16, minmax(auto, 1fr));
+	grid-template-columns: repeat(16, minmax(auto, 1fr));
+	grid-gap: 10px;
+	margin: 10px;
 }
 
 .card {
@@ -16,6 +26,12 @@ body {
 	box-shadow: var(--shadow);
 	padding: 20px;
 	margin-bottom: 10px;
+	border-radius: 8px;
+	font-size: 2rem;
+}
+
+.card.matched {
+	background: #acf1d1;
 }
 
 .card .card_front {
@@ -23,11 +39,15 @@ body {
 }
 
 .card.open .card_front {
-	display: block;
+	display: flex;
+	justify-content: center;
+	align-items: center;
 }
 
 .card .card_back {
-	display: block;
+	display: flex;
+	justify-content: center;
+	align-items: center;
 }
 
 .card.open .card_back {
