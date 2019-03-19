@@ -1,8 +1,14 @@
 const grid = document.querySelector('.js-grid');
 const cards = grid.querySelectorAll('.card');
 
+let isProcessingMatch = false;
+
 let state = {
-	selectedCards: []
+	// will hold maximum two cards [card1, card2]
+	selectedCards: [],
+	clearSelectedCards() {
+		this.selectedCards = [];
+	}
 };
 
 cards.forEach(card => {
@@ -10,40 +16,52 @@ cards.forEach(card => {
 });
 
 function handleCardClick(e) {
+	// return if it is processing the match
+	if (isProcessingMatch) return;
+
 	const cardEl = e.currentTarget;
-	// console.log('click', cardEl);
 
-	// ignore if you clicke this card already
+	// return if you clicked this card already
 	if (cardEl.classList.contains('open')) return;
-	// console.log('click', cardEl);
 
-	// if not open it
-	cardEl.classList.add('open');
-	state.selectedCards.push(cardEl);
+	// open the card
+	if (state.selectedCards.length < 2) {
+		cardEl.classList.add('open');
+		state.selectedCards.push(cardEl);
+	}
 
+	// match the card
 	if (state.selectedCards.length === 2) {
-		console.log('match the cards');
 		matchCards();
 		return;
 	}
 }
 
 function matchCards() {
+	isProcessingMatch = true;
 	let [cardA, cardB] = state.selectedCards;
-	console.log(cardA, cardB);
 
 	let valueA = cardA.dataset.value;
 	let valueB = cardB.dataset.value;
 
 	if (valueA === valueB) {
-		console.log('they match');
+		// handle a match
+		setTimeout(() => {
+			state.selectedCards.forEach(card => {
+				card.innerHTML = card.dataset.value + '(matched)';
+				card.removeEventListener('click', handleCardClick);
+			});
+			state.clearSelectedCards();
+			isProcessingMatch = false;
+		}, 1000);
 	} else {
-		console.log('they dont match');
-		state.selectedCards.forEach(card => {
-			card.classList.remove('open');
-		});
+		// handle don' match
+		setTimeout(() => {
+			state.selectedCards.forEach(card => {
+				card.classList.remove('open');
+			});
+			state.clearSelectedCards();
+			isProcessingMatch = false;
+		}, 1000);
 	}
-
-	// clear the state
-	state.selectedCards = [];
 }
