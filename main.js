@@ -84,11 +84,26 @@ function matchCards() {
 	}
 }
 
+const modalEl = document.querySelector('.js-modal');
+const timePlaceholder = modalEl.querySelector('.js-modal-time');
+
 function didItEnd() {
 	matchedCount.increment();
 
 	if (matchedCount.allMatched()) {
-		alert('congratulations');
+		modalEl.classList.add('open');
+		let countDown = 6;
+
+		let interval = setInterval(() => {
+			countDown--;
+			timePlaceholder.textContent = `${countDown}`;
+			if (countDown === 0) {
+				// restart the game
+				modalEl.classList.remove('open');
+				clearInterval(interval);
+			}
+		}, 1000);
+
 		matchedCount.restart();
 	}
 }
