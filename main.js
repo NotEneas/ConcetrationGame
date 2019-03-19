@@ -1,4 +1,46 @@
 const grid = document.querySelector('.js-grid');
+
+let Card = prop => {
+	return `
+		<div class="card" data-value="${prop.value}">
+			<section class="card_back">#</section>
+			<section class="card_front">${prop.value}</section>
+		</div>
+	`;
+};
+
+let uniqueMatches = [
+	'a',
+	'b',
+	'c'
+	// 'd',
+	// 'e',
+	// 'f',
+	// 'g',
+	// 'h',
+	// 'i',
+	// 'j',
+	// 'k',
+	// 'l',
+	// 'm',
+	// 'n',
+	// 'o',
+	// 'p',
+	// 'q',
+	// 'r'
+];
+
+function generateCardsHtml() {
+	let mathces = [...uniqueMatches, ...uniqueMatches];
+
+	console.log(mathces);
+
+	return mathces.map(value => Card({ value })).join('');
+}
+
+let html = generateCardsHtml();
+grid.innerHTML = html;
+
 const cards = grid.querySelectorAll('.card');
 
 let isProcessingMatch = false;
