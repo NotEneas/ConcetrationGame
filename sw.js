@@ -8,11 +8,19 @@ self.addEventListener('install', e => {
 
 self.addEventListener('fetch', function(event) {
 	console.log(event.request.url);
-	console.log('ale');
+	console.log('alo');
 
 	event.respondWith(
-		caches.match(event.request).then(function(response) {
-			return response || fetch(event.request);
+		caches.open('concentration_game').then(function(cache) {
+			return cache.match(event.request).then(function(response) {
+				return (
+					response ||
+					fetch(event.request).then(function(response) {
+						cache.put(event.request, response.clone());
+						return response;
+					})
+				);
+			});
 		})
 	);
 });
