@@ -11,8 +11,8 @@ let isProcessingMatch = false;
 let Card = ({ value }) => {
 	return `
 		<div class="card" data-value="${value}">
-			<section class="card_back">🃏</section>
-			<section class="card_front">${value}</section>
+			<section class="card_front"></section>
+			<section class="card_back">${value}</section>
 		</div>
 	`;
 };
@@ -42,24 +42,24 @@ let state = {
 };
 
 let uniqueMatches = [
-	'a',
-	'b',
-	'c',
-	'd',
-	'e',
-	'f',
-	'g',
-	'h',
-	'i',
-	'j',
-	'k',
-	'l',
-	'm',
-	'n',
-	'o',
-	'p',
-	'q',
-	'r'
+	'🎟',
+	'🌻',
+	'🏈',
+	'🎈',
+	'😼',
+	'🎨',
+	'🍼',
+	'💓',
+	'🍺',
+	'🚓',
+	'🏭',
+	'🎤',
+	'💍',
+	'🍐',
+	'💩',
+	'🌙',
+	'👨',
+	'👩'
 ];
 
 function startGame() {
