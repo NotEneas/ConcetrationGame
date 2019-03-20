@@ -165,6 +165,7 @@ function didItEnd() {
 			if (countDown === 0) {
 				// restart the game
 				modalEl.classList.remove('open');
+				timePlaceholder.textContent = `...`;
 				startGame();
 				clearInterval(interval);
 			}
