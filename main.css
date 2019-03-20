@@ -32,6 +32,7 @@ body {
 }
 
 .card.matched .card_back {
+	border-color: #acf1d1;
 	background: #acf1d1;
 }
 
@@ -61,7 +62,7 @@ body {
 
 	.card {
 		margin-bottom: 10px;
-		font-size: 1.4rem;
+		font-size: 2rem;
 		height: 100%;
 		position: relative;
 	}
