@@ -1,7 +1,12 @@
 self.addEventListener('install', e => {
 	e.waitUntil(
 		caches.open('concentration_game').then(cache => {
-			return cache.addAll(['/', '/index.html', '/main.css', '/main.js']);
+			return cache.addAll([
+				'/',
+				'/index.html',
+				'./main.css',
+				'./main.js'
+			]);
 		})
 	);
 });
